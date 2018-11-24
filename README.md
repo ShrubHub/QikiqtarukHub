@@ -15,7 +15,7 @@ Data are publicly available using a Creative Commons Attribution 4.0 Internation
 This dataset will be maintained at this GitHub repository (https://github.com/ShrubHub/QikiqtarukHub).
 
 ### Citation
-Isla H. Myers-Smith, Meagan M. Grabowski, Haydn J.D. Thomas, Sandra Angers-Blondin, Gergana N. Daskalova, Anne D. Bjorkman, Andrew M. Cunliffe, Jakob J. Assmann, Joseph Boyle, Edward McLeod, Samuel McLeod, Ricky Joe, Paden Lennie, Deon Arey, Richard Gordon, Cameron Eckert. Eighteen years of ecological monitoring reveals multiple lines of evidence for tundra vegetation change. Ecological Monographs. In press.
+Myers-Smith IH, MM Grabowski, HJD Thomas, S Angers-Blondin, GN Daskalova, AD Bjorkman, AM Cunliffe, JJ Assmann, J Boyle, E McLeod, S McLeod, R Joe, P Lennie, D Arey, R Gordon, C Eckert. Eighteen years of ecological monitoring reveals multiple lines of evidence for tundra vegetation change. Ecological Monographs. In press.
 
 ### Acknowledgements from the manuscript
 We thank the Herschel Island-Qikiqtaruk Territorial Park management, Catherine Kennedy, Dorothy Cooley, and Dr. Jill F. Johnstone for establishing and maintaining the phenology and composition data from Qikiqtaruk. We thank previous rangers including LeeJohn Meyook, Jordan McLeod, Pierre Foisy, Colin Gordon, Jeremy Hansen, Albert Rufus and field assistants including Santeri Lehtonen, William Palmer, Louise Beveridge, Clara Flintrop, John Godlee, Eleanor Walker, Catherine Henry and Anika Trimble. We thank Sigrid S. Nielsen and Prof. Christopher Burn for providing feedback on the manuscript. We thank the Alfred Wegener Institute, Helmholtz Centre for Polar and Marine Research for providing logistical support for this research and in particular Prof. Hugues Lantuit. Funding was provided by Herschel Island-Qikiqtaruk Territorial Park and the UK Natural Environment Research Council ShrubTundra Grant (NE/M016323/1), and we thank the NERC GEF for loan of GNSS equipment (NERC GEF:1063 and GEF:1064). Haydn Thomas and Jakob Assmann were funded by a NERC doctoral training partnership grant (NE/L002558/1). Sandra Angers-Blondin was funded by NSERC and the Canadian Centennial Scholarship Fund. Meagan Grabowski was funded by NSERC and Yukon Parks. We thank the Inuvialuit People for the opportunity to conduct research on their traditional lands.
@@ -26,6 +26,9 @@ We thank Isla H. Myers-Smith, Meagan M. Grabowski, Haydn J.D. Thomas, Sandra Ang
 ### Other links
 The phenology data are also included as a part of the 'Long-term phenology data for 47 tundra plant species at 19 high-latitude sites, 1992-2017' dataset:
 https://www.polardata.ca/pdcsearch/?doi_id=12722
+
+For more information on the Team Shrub research group see:
+https://teamshrub.com/
 
 For more information on this dataset and the perspectives of Qikiqtaruk Park Rangers please see:
 https://teamshrub.com/2017/09/28/qikiqtaruk-perspectives-by-ranger-edward-mcleod/
