@@ -86,23 +86,23 @@ theme_QHI <- function(){
 # Loading data ----
 
 # Temperature - CRU DATA
-qhi.tmp <- read.csv("Qikiqtaruk_manuscript/data/qhi_temp_2017.csv")
+qhi.tmp <- read.csv("data/qhi_temp_2017.csv")
 
 # Frost frequency days 
-qhi.frs <- read.csv("Qikiqtaruk_manuscript/data/qhi_frs_2017.csv")
+qhi.frs <- read.csv("data/qhi_frs_2017.csv")
 cutoff <- 1979
 qhi.frs <- filter(qhi.frs, year > cutoff)
 # Summing frost frequency days
 qhi.frs.sum <- ddply(qhi.frs, "year", summarize, sum.ice = sum(value))
 
 # Sea Ice Concentration
-cwa <- read.csv("Qikiqtaruk_manuscript/data/qhi_cwa_1968_2017.csv")
+cwa <- read.csv("data/qhi_cwa_1968_2017.csv")
 
 cwa$Year <- as.numeric(cwa$Year)
 cwa.sub <- cwa[cwa$Year > 1979,]
 
 # Temperature at depth 12m and 15m
-boreholes <- read.csv("Qikiqtaruk_manuscript/data/qhi_temp_multimeter_2017.csv")
+boreholes <- read.csv("data/qhi_temp_multimeter_2017.csv")
 soil.temp.qhi <- boreholes %>% filter(Depth == "12" | Depth == "15" | Depth == "16")  
 date_split <- strsplit(as.character(soil.temp.qhi$date),'-')
 date_split <- do.call(rbind, date_split)
@@ -111,17 +111,17 @@ soil.temp.qhi$year <- as.numeric(date_split[,3]) + 2000
 soil.temp.qhi <- filter(soil.temp.qhi, temperature > -9.9 )
 
 # Phenology
-qiphen <- read.csv("Qikiqtaruk_manuscript/data/qhi_phen_with_before_2017.csv", stringsAsFactors = F)
+qiphen <- read.csv("data/qhi_phen_with_before_2017.csv", stringsAsFactors = F)
 
 # Snowmelt
 snow <- dplyr::select(qiphen[!is.na(qiphen$P1),], 1:4)
 
 # Radial growth
-dendro <- read.csv("Qikiqtaruk_manuscript/data/qhi_dendro_2017.csv", stringsAsFactors = F)
+dendro <- read.csv("data/qhi_dendro_2017.csv", stringsAsFactors = F)
 
 # Vegetation cover and canopy height ----
 
-HEcover <- read.csv("Qikiqtaruk_manuscript/data/qhi_cover_ITEX_1999_2017.csv")
+HEcover <- read.csv("data/qhi_cover_ITEX_1999_2017.csv")
 levels(HEcover$name) # Checking all spelling is correct
 
 # Zero fill data
@@ -150,7 +150,7 @@ HEcoverHE$name <- as.character(HEcoverHE$name)
 HEcoverHE$name[HEcoverHE$name == "XXXcarex:QHI "] <- "Carex sp."
 
 # Total biomass - Hits
-abundance <- read.csv("Qikiqtaruk_manuscript/data/qhi_point_fraiming_ITEX_1999-2017.csv")
+abundance <- read.csv("data/qhi_point_fraiming_ITEX_1999-2017.csv")
 abundance$unique_coords <- paste(abundance$X, abundance$Y, sep = "")
 
 # Check no. points per plot as sometimes 90
@@ -264,12 +264,12 @@ diversity$rel_cover <- diversity$cover/diversity$total_cover*100
 
 # ** Species pool data ----
 
-SAC.acc <- read.csv("Qikiqtaruk_manuscript/data/qhi_SAC_accumulated.csv")
+SAC.acc <- read.csv("data/qhi_SAC_accumulated.csv")
 
 # ** Active layer depth data ----
 
-act.layer <- read.csv("Qikiqtaruk_manuscript/data/qhi_act_layer_all_data.csv")
-act.layer.2017 <- read.csv("Qikiqtaruk_manuscript/data/qhi_active_layer_2017_all.csv")
+act.layer <- read.csv("data/qhi_act_layer_all_data.csv")
+act.layer.2017 <- read.csv("data/qhi_active_layer_2017_all.csv")
 
 # Modelling and data visualisation ----
 
@@ -792,7 +792,7 @@ soil43_16_preds_df$year <- soil43_16_preds_df$year + 4
 # Arranging in a panel and saving the file
 Figure3 <- grid.arrange(spring, summer, fall, winter, frost, snow.melt, sea.ice, soil.qhi, ncol=2)
 
-ggsave("Qikiqtaruk_manuscript/figures/Figure3_temp_frost_snow_ice_soil.pdf", 
+ggsave("figures/Figure3_temp_frost_snow_ice_soil.pdf", 
        Figure3, width = 30, height = 60, units = "cm")
 
 # Figure 4. Active layer depth ----
@@ -948,7 +948,7 @@ act.layer.KO <- na.omit(act.layer.2017.KO)
 # Arranging in a panel and saving the file
 Figure4 <- grid.arrange(act.layer.year, act.layer.season, ncol = 2)
 
-ggsave("Qikiqtaruk_manuscript/figures/Figure4_act_layer.pdf", 
+ggsave("figures/Figure4_act_layer.pdf", 
        Figure4, width = 60, height = 30, units = "cm")
 
 # Figure 6. Phenology change ----
@@ -1024,7 +1024,7 @@ write("
       phat[j] <- a + b*xhat[j]
       }
       }
-      ","Qikiqtaruk_manuscript/models/int_cens_P2.jags")
+      ","models/int_cens_P2.jags")
 
 # INITIAL VALUES ("t" is mandatory)
 inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1,0,1), sigma = runif(1,0,1), t = as.vector(apply(jags.dat$lim, 1, mean)))
@@ -1032,7 +1032,7 @@ inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1
 # PARAMETERS TO MONITOR
 params <- c("a", "b", "phat","aplot", "sigma", "sigma.plot", "sigma.year") ## ADD PARAMETERS TO MONITOR
 
-modoutP2 <- jags(jags.dat, inits, params, model.file="Qikiqtaruk_manuscript/models/int_cens_P2.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
+modoutP2 <- jags(jags.dat, inits, params, model.file="models/int_cens_P2.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
 
 # plot(modoutP2) # check convergence
 
@@ -1135,7 +1135,7 @@ write("
       diff1to3 <- aspp[1] - aspp[3]
       diff2to3 <- aspp[2] - aspp[3]
       }
-      ","Qikiqtaruk_manuscript/models/int_cens_P3.jags")
+      ","models/int_cens_P3.jags")
 
 # INITIAL VALUES ("t" is mandatory)
 inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1,0,1), sigma = runif(1,0,1), t = as.vector(apply(jags.dat$lim, 1, mean)))
@@ -1143,7 +1143,7 @@ inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1
 # PARAMETERS TO MONITOR
 params <- c("aspp", "bspp", "phat","aplot", "sigma", "sigma.plot", "sigma.year", "diff1to2", "diff1to3", "diff2to3") ## ADD PARAMETERS TO MONITOR
 
-modoutP3 <- jags(jags.dat,inits, params, model.file="Qikiqtaruk_manuscript/models/int_cens_P3.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
+modoutP3 <- jags(jags.dat,inits, params, model.file="models/int_cens_P3.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
 
 # plot(modoutP3) #check convergence, etc.
 
@@ -1244,7 +1244,7 @@ write("
       phat[j] <- a + b*xhat[j]
       }
       }
-      ","Qikiqtaruk_manuscript/models/int_cens_P5.jags")
+      ","models/int_cens_P5.jags")
 
 # INITIAL VALUES
 inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1,0,1), sigma = runif(1,0,1), t = as.vector(apply(jags.dat$lim, 1, mean)))
@@ -1252,7 +1252,7 @@ inits <- function() list(aplot = rnorm(jags.dat$nplot,0,2), sigma.plot = runif(1
 # PARAMETERS TO MONITOR
 params <- c("a", "b", "phat","aplot", "sigma", "sigma.plot", "sigma.year") ## ADD PARAMETERS TO MONITOR
 
-modoutP5 <- jags(jags.dat, inits, params, model.file="Qikiqtaruk_manuscript/models/int_cens_P5.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
+modoutP5 <- jags(jags.dat, inits, params, model.file="models/int_cens_P5.jags", n.chains=3, n.iter=20000, n.burnin=10000, n.thin=5, DIC=FALSE, working.directory=NULL, progress.bar = "text")
 
 # plot(modoutP5) #check convergence, etc.
 
@@ -1407,7 +1407,7 @@ write("
       yhatDiff[j] <- yhatP5[j]-yhatP2[j+1] #add 1 to yhatP2 because it starts one year earlier
       }
       }
-      ","Qikiqtaruk_manuscript/models/growing_season_pheno.jags")
+      ","models/growing_season_pheno.jags")
 
 # INITIAL VALUES
 
@@ -1417,7 +1417,7 @@ inits <- function() list(aplotP2=rnorm(jags.dat$nplotP2,0,2), tP2=as.vector(appl
 
 params <- c("aplotP2","aplotP5","sigma.plotP2","sigma.plotP5","aP2","aP5","sigmaP2","sigmaP5","bP2","bP5","yhatP2","yhatP5","sigma.yearP2","sigma.yearP5","slopeDiff","yhatDiff")
 
-modoutP2P5 <- jags(jags.dat,inits, params, model.file="Qikiqtaruk_manuscript/models/growing_season_pheno.jags", n.chains=3,n.iter=30000,n.burnin=15000, n.thin=2, DIC=FALSE, working.directory=NULL, progress.bar = "text")
+modoutP2P5 <- jags(jags.dat,inits, params, model.file="models/growing_season_pheno.jags", n.chains=3,n.iter=30000,n.burnin=15000, n.thin=2, DIC=FALSE, working.directory=NULL, progress.bar = "text")
 
 # plot(modoutP2P5) #check convergence, etc.
 
@@ -1525,7 +1525,7 @@ Figure6 <- grid.arrange(
 )
 
 # Arranging in a panel and saving the file
-ggsave("Qikiqtaruk_manuscript/figures/Figure6_phenology.pdf", 
+ggsave("figures/Figure6_phenology.pdf", 
        Figure6, width = 33, height = 33, units = "cm")
 
 ### Calculate mean and SD for interval censored data
@@ -1587,7 +1587,7 @@ table.P2P5$Model <- "P2P5"
 
 table.pheno.all <- rbind(table.P2, table.P3, table.P5, table.P2P5)
 
-write.csv(table.pheno.all, "Qikiqtaruk_manuscript/model_outputs/Phenology_JAGS_coefficients_all_models.csv")
+write.csv(table.pheno.all, "model_outputs/Phenology_JAGS_coefficients_all_models.csv")
 
 # standardized effect sizes
 
@@ -1599,7 +1599,7 @@ pheno.es$Data_SD[pheno.es$Model=="P3"][3] <- as.numeric(qiphen_mean_sds[3,"P3_me
 pheno.es$Data_SD[pheno.es$Model=="P5"] <- as.numeric(qiphen_mean_sds[3,"P5_mean_sd"])
 pheno.es$Data_SD[pheno.es$Model=="P2P5"] <- as.numeric(qiphen_mean_sds[3,"P5_P2_mean_sd"])
 
-write.csv(pheno.es, file="Qikiqtaruk_manuscript/model_outputs/Phenology_JAGS_EffectSizes_all_models.csv")
+write.csv(pheno.es, file="model_outputs/Phenology_JAGS_EffectSizes_all_models.csv")
 
 # Figure 7. Canopy height and radial growth ----
 
@@ -1893,7 +1893,7 @@ Salix_glauca_preds_df <- cbind.data.frame(lower = Salix_glauca_preds_df[,1],
 Figure7 <- grid.arrange(grid.arrange(canopy.height, salix, ncol = 2, nrow = 1),
                         radial.growth, ncol = 1, nrow = 2)
 
-ggsave("Qikiqtaruk_manuscript/figures/Figure7_height_dendro.pdf", 
+ggsave("figures/Figure7_height_dendro.pdf", 
        Figure7, width = 30, height = 30, units = "cm")
 
 # Figure 8. Vegetation cover community composition changes ----
@@ -2432,7 +2432,7 @@ KO_plot_preds_df2 <- cbind.data.frame(lower = KO_plot_preds_df2[,1],
 # Arranging in a panel and saving the file
 Figure8 <- grid.arrange(veg.cover, bare.ground, richness.plot, evenness.plot, herschel, komakuk, ncol=2)
 
-ggsave("Qikiqtaruk_manuscript/figures/Figure8_com_comp.pdf", Figure8,
+ggsave("figures/Figure8_com_comp.pdf", Figure8,
        width = 30, height = 45, units = "cm")
 
 # All species model Herschel Vegetation Type
@@ -2572,10 +2572,10 @@ KO_SAC_preds_df <- rbind(KO_SAC_preds_df, new_df)
     geom_point(data = SAC.acc, aes(x = distance.all, y = accumulated, 
                                    colour = factor(veg.type)), alpha = 0.8, size = 8) +
     geom_ribbon(data = HE_SAC_preds_df, aes(x = distance, ymin = lower, ymax = upper), 
-               fill = "#ffa544", alpha = 0.2) +
+                fill = "#ffa544", alpha = 0.2) +
     geom_line(data = HE_SAC_preds_df, aes(x = distance, y = mean), colour = "#ffa544") +
     geom_ribbon(data = KO_SAC_preds_df, aes(x = distance, ymin = lower, ymax = upper), 
-              fill = "#2b299b", alpha = 0.2) +
+                fill = "#2b299b", alpha = 0.2) +
     geom_line(data = KO_SAC_preds_df, aes(x = distance, y = mean), colour = "#2b299b") +
     scale_color_manual(values = c("#ffa544", "#2b299b"), name = "", labels = c("Her.", "Kom.")) +
     scale_fill_manual(values = c("#ffa544","#2b299b"), name = "", labels = c("Her.", "Kom.")) +
@@ -2589,13 +2589,13 @@ KO_SAC_preds_df <- rbind(KO_SAC_preds_df, new_df)
           axis.text = element_text(size = 30),
           axis.title = element_text(size = 36),
           legend.text = element_text(size = 26)) +
-    labs(x = "Distance (m)", y = "Number of species\n") +
+    labs(x = "\nDistance (m)", y = "Number of species\n") +
     guides(fill = FALSE))
 
 # Saving the file
 Figure9 <- grid.arrange(SAC.plot, ncol = 1)
 
-ggsave("Qikiqtaruk_manuscript/figures/Figure9_SAC.pdf", 
+ggsave("figures/Figure9_SAC.pdf", 
        Figure9, width = 30, height = 30, units = "cm")
 
 # Standardised effect sizes ----
@@ -2719,7 +2719,7 @@ all_effects[13,9] <- as.character("#FFFFFF")
 
 # Effect sizes for leaf emergence S arctica
 # Read in output saved in phenology section
-pheno.es <- read.csv("Qikiqtaruk_manuscript/model_outputs/Phenology_JAGS_EffectSizes_all_models.csv", stringsAsFactors = F)
+pheno.es <- read.csv("model_outputs/Phenology_JAGS_EffectSizes_all_models.csv", stringsAsFactors = F)
 all_effects[14,2] <- pheno.es$mean[pheno.es$Model=="P2"]
 all_effects[14,3] <- pheno.es$Data_SD[pheno.es$Model=="P2"]
 all_effects[14,4] <- pheno.es$X2.5.[pheno.es$Model=="P2"]
@@ -2894,7 +2894,7 @@ all_effects[33,7] <- HPDinterval(act_layer_m_KO$Sol[,"I(day - 174)"])[,1]/sd(act
 all_effects[33,8] <- HPDinterval(act_layer_m_KO$Sol[,"I(day - 174)"])[,2]/sd(act.layer.2017.KO$mean.depth, na.rm = TRUE)
 all_effects[33,9] <- as.character("#3cd0ea")
 
-write.csv(all_effects, file = "Qikiqtaruk_manuscript/model_outputs/All_standardised_effects_2017.csv")
+write.csv(all_effects, file = "model_outputs/All_standardised_effects_2017.csv")
 
 # All MCMC model outputs for effect size figure and SI table ----
 
@@ -2940,7 +2940,7 @@ mcmc.outputs.random <- as.data.frame(do.call(rbind, readyList))
 mcmc.outputs <- rbind(mcmc.outputs.random, mcmc.outputs.simple)
 
 # Write csv
-write.csv(mcmc.outputs, file = "Qikiqtaruk_manuscript/model_outputs/All_mcmc_outputs_2017.csv")
+write.csv(mcmc.outputs, file = "model_outputs/All_mcmc_outputs_2017.csv")
 
 # Generate html table
 stargazer(mcmc.outputs, type = "html", summary = FALSE, digits = 2)
@@ -2955,8 +2955,8 @@ HE_plot_all_linear_outputs <- clean.MCMC(HE_plot_all_linear)
 KO_plot_all_linear_outputs <- clean.MCMC(KO_plot_all_linear)
 
 # Write csv
-write.csv(HE_plot_all_linear_outputs, file = "Qikiqtaruk_manuscript/model_outputs/HE_plot_all_linear_outputs.csv")
-write.csv(KO_plot_all_linear_outputs, file = "Qikiqtaruk_manuscript/model_outputs/KO_plot_all_linear_outputs.csv")
+write.csv(HE_plot_all_linear_outputs, file = "model_outputs/HE_plot_all_linear_outputs.csv")
+write.csv(KO_plot_all_linear_outputs, file = "model_outputs/KO_plot_all_linear_outputs.csv")
 
 # Herschel species table
 stargazer(HE_plot_all_linear_outputs, type = "html", summary = FALSE, digits = 2)
@@ -3008,7 +3008,7 @@ Figure10 <- grid.arrange(
 )
 
 # Saving the file
-ggsave("Qikiqtaruk_manuscript/figures/Figure10_effect_sizes.pdf", 
+ggsave("figures/Figure10_effect_sizes.pdf", 
        Figure10, width = 45, height = 30, units = "cm")
 
 # Models and figures not used in manuscript ----
@@ -3041,7 +3041,7 @@ ggsave("Qikiqtaruk_manuscript/figures/Figure10_effect_sizes.pdf",
 # Herbivory
 
 # Load data
-QikHerbDF <- read.csv("Qikiqtaruk_manuscript/data/qhi_herbivores.csv")
+QikHerbDF <- read.csv("data/qhi_herbivores.csv")
 
 # Filtering original data frame per species
 caribou <- filter(QikHerbDF, Species == "Caribou")
@@ -3235,5 +3235,5 @@ muskox_number_preds_df <- cbind.data.frame(lower = muskox_number_preds_df[,1],
 # Arranging in a panel and saving the file
 SI_temp_herb <- grid.arrange(all_seasons, group_size, group_number, ncol = 2)
 
-ggsave("Qikiqtaruk_manuscript/figures/SI_temp_herb.pdf", 
+ggsave("figures/SI_temp_herb.pdf", 
        SI_temp_herb, width = 30, height = 30, units = "cm")
