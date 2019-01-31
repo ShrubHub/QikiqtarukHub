@@ -5,6 +5,8 @@
 # E-mail: isla.myers-smith@ed.ac.uk
 # 2018-01-30 
 
+packrat::init()
+
 # Packages ----
 library(MCMCglmm)
 library(ggplot2)
