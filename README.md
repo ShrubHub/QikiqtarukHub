@@ -3,6 +3,13 @@
 ### Description
 _This repository contains code and data necessary to replicate data analysis, figures, and tables in __"Eighteen years of ecological monitoring reveals multiple lines of evidence for tundra vegetation change"__._
 
+### Paper reference
+Myers‐Smith, I.H., Grabowski, M.M., Thomas, H.J., Angers‐Blondin, S., Daskalova, G.N., Bjorkman, A.D., Cunliffe, A.M., Assmann, J.J., Boyle, J.S., McLeod, E. and McLeod, S., 2019. Eighteen years of ecological monitoring reveals multiple lines of evidence for tundra vegetation change. Ecological Monographs, 89(2), p.e01351.
+https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecm.1351
+
+### Dataset DOI
+https://doi.org/10.5281/zenodo.2397996
+
 ### Authors
 Isla H. Myers-Smith, Meagan M. Grabowski, Haydn J.D. Thomas, Sandra Angers-Blondin, Gergana N. Daskalova, Anne D. Bjorkman, Andrew M. Cunliffe, Jakob J. Assmann, Joseph Boyle, Edward McLeod, Samuel McLeod, Ricky Joe, Paden Lennie, Deon Arey, Richard Gordon, Cameron Eckert
 
